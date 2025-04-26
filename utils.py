@@ -1,5 +1,7 @@
 import chess
 
+
+# Rules for draws
 def get_game_status(board: chess.Board) -> str | None:
     outcome = board.outcome(claim_draw=True)
     if outcome is None:

@@ -1,0 +1,10 @@
+Phase 1: PGN loading + error detection + console report
+
+Phase 2: Puzzle generation + GUI puzzle mode
+MVP
+
+
+
+Phase 3: Adaptive scheduling (Elo + motif targeting)
+
+Phase 4: Analytics dashboard of improvement

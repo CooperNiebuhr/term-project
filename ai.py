@@ -47,3 +47,4 @@ def select_greedy_move(board: chess.Board) -> chess.Move | None:
             best_moves.append(move)
 
     return random.choice(best_moves) if best_moves else None
+
