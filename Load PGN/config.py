@@ -1,0 +1,1 @@
+PGN_FOLDER = "pgns"
