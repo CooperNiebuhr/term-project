@@ -23,7 +23,7 @@ def main():
     print(f"Detected labels ({len(LABELS)}): {LABELS}")
 
     # Hyperparameters
-    batch_size = 64
+    batch_size = 128
     epochs     = 10
     lr         = 1e-3
     device     = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
