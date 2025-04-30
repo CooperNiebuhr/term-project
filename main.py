@@ -137,7 +137,7 @@ def main():
                             game_over = True
                             result_text = status
                         else:
-                            # Bot's turn
+                            # Bot'pgns turn
                             bot_move = select_greedy_move(board)
                             if bot_move:
                                 board.push(bot_move)

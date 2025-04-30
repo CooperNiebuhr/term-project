@@ -1,1 +1,0 @@
-PGN_FOLDER = "pgns"

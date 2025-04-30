@@ -2,7 +2,7 @@
 
 import chess
 import chess.engine
-from config import ENGINE_PATH, ENGINE_DEPTH
+from load_pgn.config import ENGINE_PATH, ENGINE_DEPTH
 
 class EngineEvaluator:
     """

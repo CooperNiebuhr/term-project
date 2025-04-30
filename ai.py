@@ -14,7 +14,7 @@ VALUES = {
 }
 
 def evaluate_board(board: chess.Board) -> float:
-    """Material balance from White’s POV (White minus Black)."""
+    """Material balance from White’pgns POV (White minus Black)."""
     score = 0.0
     for square in chess.SQUARES:
         piece = board.piece_at(square)
