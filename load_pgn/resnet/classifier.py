@@ -6,8 +6,8 @@ import pandas as pd
 import argparse
 
 from load_pgn.config import OUTPUT_CSV, PUZZLE_DB_CSV
-from load_pgn.rnn.model import TacticsResNet
-from load_pgn.rnn.dataset import fen_to_tensor
+from load_pgn.resnet.model import TacticsResNet
+from load_pgn.resnet.dataset import fen_to_tensor
 
 # 1) Your labels must match train.py
 LABELS = ['backRankMate', 'deflection', 'discoveredAttack', 'fork', 'hangingPiece', 'mateIn2', 'other', 'pin', 'promotion', 'sacrifice', 'skewer']

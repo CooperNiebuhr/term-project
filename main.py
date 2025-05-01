@@ -7,7 +7,7 @@ import os
 import tempfile
 from ai import select_greedy_move
 from utils import get_game_status
-from load_pgn.rnn.classifier import get_drills
+from load_pgn.resnet.classifier import get_drills
 from load_pgn.config import PGN_FOLDER, OUTPUT_CSV
 from load_pgn.pgn_parser import parse_pgns
 from track_errors import analyze_pgn_file, main as track_errors_main
