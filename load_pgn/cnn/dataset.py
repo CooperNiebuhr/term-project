@@ -8,7 +8,7 @@ import random
 
 def fen_to_tensor(fen: str, last_move_uci: str = None) -> torch.FloatTensor:
     """
-    22-channel tensor:
+    26-channel tensor:
       - 12 piece planes
       - 1 side-to-move
       - 2 last-move src/dst masks
@@ -16,9 +16,12 @@ def fen_to_tensor(fen: str, last_move_uci: str = None) -> torch.FloatTensor:
       - 1 en passant possibility
       - 1 move generation features (attack/defense count)
       - 1 check indicator
+      - 1 piece values under attack (material tension)
+      - 1 pin detection
+      - 2 distance to kings
     """
     board = chess.Board(fen)
-    tensor = torch.zeros(22, 8, 8, dtype=torch.float32)
+    tensor = torch.zeros(26, 8, 8, dtype=torch.float32)
 
     # 12 piece planes
     mapping = {
@@ -66,6 +69,44 @@ def fen_to_tensor(fen: str, last_move_uci: str = None) -> torch.FloatTensor:
     
     # Check indicator
     tensor[21, :, :] = float(board.is_check())
+    
+    # NEW FEATURES
+    
+    # Piece values under attack (material tension)
+    piece_values = {'p': 1, 'n': 3, 'b': 3, 'r': 5, 'q': 9, 'k': 0}
+    for sq, piece in board.piece_map().items():
+        row, col = 7 - (sq // 8), sq % 8
+        attackers = board.attackers(not piece.color, sq)
+        if attackers:
+            value = piece_values[piece.symbol().lower()]
+            tensor[22, row, col] = min(1.0, value / 9.0)  # Normalize by queen value
+    
+    # Pin detection
+    for sq in chess.SQUARES:
+        if board.piece_at(sq):
+            row, col = 7 - (sq // 8), sq % 8
+            # Check if piece is pinned
+            piece_color = board.piece_at(sq).color
+            king_sq = board.king(piece_color)
+            if king_sq is not None and board.is_pinned(piece_color, sq):
+                tensor[23, row, col] = 1.0
+    
+    # Distance to kings
+    white_king_sq = board.king(chess.WHITE)
+    black_king_sq = board.king(chess.BLACK)
+    if white_king_sq is not None and black_king_sq is not None:
+        wk_row, wk_col = 7 - (white_king_sq // 8), white_king_sq % 8
+        bk_row, bk_col = 7 - (black_king_sq // 8), black_king_sq % 8
+        
+        for r in range(8):
+            for c in range(8):
+                # Distance to white king (normalized)
+                w_dist = max(abs(r - wk_row), abs(c - wk_col)) / 7.0
+                tensor[24, r, c] = 1.0 - w_dist  # Closer = higher value
+                
+                # Distance to black king (normalized)
+                b_dist = max(abs(r - bk_row), abs(c - bk_col)) / 7.0
+                tensor[25, r, c] = 1.0 - b_dist  # Closer = higher value
     
     return tensor
 
