@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, WeightedRandomSampler
 
 from load_pgn.config import PUZZLE_DB_CSV
 from load_pgn.cnn.dataset import TacticDataset
-from load_pgn.cnn.model import ImprovedTacticCNN
+from load_pgn.cnn.model import TacticsResNet  # Changed from ImprovedTacticCNN
 
 def mixup_data(x, y, alpha=0.2):
     """Applies mixup augmentation to a batch"""
@@ -85,13 +85,20 @@ def main():
     val_ds = TacticDataset(val_df, label_map, augment=False)
     test_ds = TacticDataset(test_df, label_map, augment=False)
 
-    train_loader = DataLoader(train_ds, batch_size=64, sampler=sampler)
-    val_loader = DataLoader(val_ds, batch_size=64, shuffle=False)
-    test_loader = DataLoader(test_ds, batch_size=64, shuffle=False)
+    # Use a slightly smaller batch size for the deeper model
+    batch_size = 48 
+    train_loader = DataLoader(train_ds, batch_size=batch_size, sampler=sampler)
+    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
+    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
 
     # --- model, loss, optimizer, scheduler
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = ImprovedTacticCNN(len(LABELS)).to(device)
+    
+    # Use TacticsResNet instead of ImprovedTacticCNN
+    model = TacticsResNet(num_classes=len(LABELS), in_channels=26, 
+                         num_filters=128, num_blocks=8, drop=0.4).to(device)
+    
+    print(f"Using model: TacticsResNet with 26-channel input")
     
     # Use either label smoothing or focal loss
     use_focal_loss = True
@@ -100,12 +107,12 @@ def main():
     else:
         criterion = torch.nn.CrossEntropyLoss(label_smoothing=0.1)
     
-    # Optimizer with higher weight decay for regularization
+    # Optimizer with weight decay for regularization
     optimizer = optim.AdamW(model.parameters(), lr=3e-4, weight_decay=1e-3)
     
-    # LR warmup + cosine annealing schedule
+    # LR warmup + cosine annealing schedule with longer warmup for deeper model
     def lr_lambda(epoch):
-        warmup_epochs = 5
+        warmup_epochs = 8  # Increased from 5
         if epoch < warmup_epochs:
             return epoch / warmup_epochs
         else:
@@ -115,15 +122,22 @@ def main():
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
 
     best_acc = 0
-    os.makedirs('models', exist_ok=True)
     
-    # Early stopping setup
-    patience = 10
+    # Create an absolute path to the models directory to avoid any path issues
+    model_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'models')
+    os.makedirs(model_dir, exist_ok=True)
+    model_path = os.path.join(model_dir, 'tactic_cnn_best.pth')
+    model_final_path = os.path.join(model_dir, 'tactic_cnn_final.pth')
+    
+    print(f"Model will be saved to: {model_path}")
+    
+    # Early stopping setup with longer patience for complex model
+    patience = 15  # Increased from 10
     early_stop_counter = 0
     best_val_loss = float('inf')
 
     # --- training loop
-    for epoch in range(1, 51):  # More epochs with early stopping
+    for epoch in range(1, 71):  # More epochs for deeper model (increased from 51)
         # train
         model.train()
         total_loss = 0
@@ -189,7 +203,7 @@ def main():
         # save best
         if val_acc > best_acc:
             best_acc = val_acc
-            torch.save(model.state_dict(), 'models/tactic_cnn_best.pth')
+            torch.save(model.state_dict(), model_path)
             print(f"→ New best accuracy: {best_acc:.3f}")
             early_stop_counter = 0
         else:
@@ -201,7 +215,7 @@ def main():
             break
 
     # Load best model and evaluate on test set
-    model.load_state_dict(torch.load('models/tactic_cnn_best.pth'))
+    model.load_state_dict(torch.load(model_path))
     model.eval()
     
     correct = 0
@@ -233,7 +247,7 @@ def main():
             print(f"{LABELS[i]}: {100 * class_correct[i] / class_total[i]:.1f}%")
     
     # final save
-    torch.save(model.state_dict(), 'models/tactic_cnn_final.pth')
+    torch.save(model.state_dict(), model_final_path)
     print(f"Done. Best val_acc: {best_acc:.3f}, Final test_acc: {test_acc:.3f}")
 
 if __name__ == '__main__':
