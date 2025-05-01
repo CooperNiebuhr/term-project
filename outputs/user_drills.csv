@@ -1,0 +1,11 @@
+fen,played_move,best_move,category,motif,confidence,puzzle_fen,puzzle_moves,puzzle_rating,puzzle_motif
+r1bqkbnr/pppp1ppp/2n5/3Pp3/4P3/8/PPP2PPP/RNBQKBNR b KQkq - 0 3,c6d4,c6e7,blunder,deflection,0.3788596987724304,6k1/1p5p/p5p1/5qP1/5P2/2P5/PPKQ1R2/4r3 w - - 10 43,d2d3 e1c1 c2d2 c1d1 d2d1 f5d3,1329,deflection
+r1bqkbnr/pppp1ppp/8/3Pp3/3nP3/8/PPP2PPP/RNBQKBNR w KQkq - 1 4,f1c4,c2c3,blunder,fork,0.3122093081474304,r1bqk1nr/1pp2ppp/p7/3Np3/2BbP3/8/PPPP2PP/R1BQK2R w KQkq - 0 9,c2c3 d8h4 g2g3 h4e4 d1e2 e4h1,1277,fork
+r1bqkbnr/pp3ppp/2p5/1n2p3/2B1P3/2P5/PP3PPP/RNBQK1NR w KQkq - 0 7,d1f3,c4f7,blunder,fork,0.36203956604003906,5rk1/ppp1qp1p/6p1/3np3/2Bn4/6Q1/PPP2PPP/R4RK1 w - - 0 15,c4d5 d4e2 g1h1 e2g3,1108,fork
+r2qk2r/p2nbppp/8/1Q2p2b/4P3/2P2P2/PP2N1PP/RNB1K2R w KQkq - 5 15,f3f4,e2g3,blunder,fork,0.3348371684551239,4Q3/5p2/1qp1k1p1/pp2p2p/4P3/5P1P/3r2P1/2R4K b - - 8 49,e6f6 c1c6 b6c6 e8c6,1053,fork
+r2qk2r/p2nbppp/8/1Q2p2b/4PP2/2P5/PP2N1PP/RNB1K2R b KQkq - 0 15,h5e2,a8b8,blunder,pin,0.37281426787376404,6k1/ppp3pp/1bn1r3/3p4/3P1B2/2P5/PP1N2PP/R4K2 w - - 5 21,a1e1 e6f6 g2g3 g7g5 f1g2 g5f4,1578,pin
+r2q1rk1/p2nbppp/8/1Q6/4PB2/2P5/PP2K1PP/RN5R w - - 1 18,h2h4,h1d1,blunder,fork,0.3691226840019226,8/5p2/1p1R4/4pk1p/4N3/P3nP2/PKP4r/8 w - - 6 35,d6b6 e3c4 b2b3 c4b6,1473,fork
+r2q1rk1/p2nbppp/8/1Q6/4PB2/2P3P1/PP2K3/RN5R w - - 1 20,b5h5,h1d1,blunder,fork,0.36626720428466797,r4rk1/1pq1bpp1/p4n1p/2p1p3/5P2/2N1Q2P/PPPB2P1/2KRR3 b - - 0 17,e7d6 f4e5 d6e5 e3e5,1183,fork
+r2q1rk1/p4ppp/3b1n2/8/4PB2/2P3PQ/PP2K3/RN5R w - - 5 22,e4e5,b1d2,blunder,discoveredAttack,0.3645794093608856,r4rk1/p4pp1/2pq1B1p/3n4/8/P2B3P/5PP1/2RQR1K1 b - - 0 22,d5f6 d3h7 g8h7 d1d6,1061,discoveredAttack
+r2q1rk1/p4ppp/5n2/4B3/8/2P3PQ/PP2K3/RN5R b - - 0 23,d8e7,f8e8,blunder,sacrifice,0.4600510895252228,5k1r/ppp2ppp/1b1B1n2/q7/N7/3B1P1b/PPP1Q2P/4R2K b - - 4 19,c7d6 e2e7 f8g8 e7e8 f6e8 e1e8,1334,sacrifice
+r3r1k1/p3qppp/5n2/4BQ2/8/2P3P1/PP2K3/RN5R w - - 3 25,e2f3,e2d3,blunder,pin,0.542388916015625,8/1k2K3/3BR1p1/1p5b/p1n5/P1P5/8/8 w - - 21 66,e7d7 h5g4 d7e7 g4e6,1412,pin
