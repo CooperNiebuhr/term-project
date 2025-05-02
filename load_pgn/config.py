@@ -7,4 +7,4 @@ ENGINE_PATH = "stockfish"
 ENGINE_DEPTH = 15
 
 OUTPUT_CSV = os.path.join(HERE, '..', 'outputs', 'blunder_results.csv')
-PUZZLE_DB_CSV = os.path.join(HERE, '..', 'data', 'handled_data_with_delta.csv')
+PUZZLE_DB_CSV = os.path.join(HERE, '..', 'data', 'handled_data.csv')
